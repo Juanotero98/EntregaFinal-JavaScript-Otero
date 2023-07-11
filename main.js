@@ -12,6 +12,8 @@ function agregaralCarrito(nombre, precio){
   carritoCompras.push(producto)
 }
 
+//FUNCION PARA QUITAR PRODUCTOS DEL CARRITO DE COMPRAS//
+
 function quitarProducto(indice){
   if(indice >= 0 && indice < carritoCompras.length){
     carritoCompras.splice(indice, 1)
@@ -34,13 +36,14 @@ function calcularTotal(){
   return total
 }
 
-//AGREGAR PRODUCTOS AL CARRITO DE COMPRAS//
+//AGREGAR  O QUITAR PRODUCTOS AL CARRITO DE COMPRAS//
 agregaralCarrito("Golosina 0", 1000)
 agregaralCarrito("Golosina 1", 1500)
 agregaralCarrito("Golosina 2", 300)
 agregaralCarrito("Golosina 3", 200)
 
-quitarProducto(1)
+quitarProducto(2)
+quitarProducto(0)
 
 console.log("Carrito de Compras")
 console.log(carritoCompras)
