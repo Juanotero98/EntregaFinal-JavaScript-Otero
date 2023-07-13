@@ -7,47 +7,73 @@ const carritoCompras = []
 
 //FUNCION PARA AGREGAR PRODUCTOS AL CARRITO DE COMPRAS//
 
-function agregaralCarrito(nombre, precio){
+function agregaralCarrito(){
+  const nombre = prompt("Ingrese el nombre del producto:")
+  const precio = parseFloat(prompt("Ingrese el precio del producto:"))
+
+  if (isNaN(precio)){
+    alert("El precio ingresado es incorrecto, por favor introdusca otro.")
+    return
+  }
+
   let producto = {nombre, precio}
   carritoCompras.push(producto)
+  alert("Producto agregado al carrito de compras")
+ 
+}
+
+//FUNCION PARA MOSTRAR EL CARRITO DE COMPRAS//
+
+function mostrarCarritoCompras(){
+  let mensaje = "Carrito de compras:/n"
+  for (let i = 0; i < carritoCompras.length; i++){
+   mensaje += `${i + 1}. ${carritoCompras[i].nombre}: $${carritoCompras[i].precio}\n`
+  }
+  alert(mensaje);
 }
 
 //FUNCION PARA QUITAR PRODUCTOS DEL CARRITO DE COMPRAS//
 
-function quitarProducto(indice){
-  if(indice >= 0 && indice < carritoCompras.length){
-    carritoCompras.splice(indice, 1)
-    console.log("Golosina eliminada del carrito")
-  } else{
-    console.log("Indice incorrecto, golosina no encontrada en el carrito")
+function quitarProducto(){
+  const indice = parseInt(prompt("Ingrese por favor el Indice del producto a eliminar")) - 1
+  
+  if(isNaN(indice) || indice <0 || indice >= carritoCompras.length ){
+    alert("El indice agregado es incorrecto")
+    return
+  }
+
+  carritoCompras.splice(indice, 1)
+  alert("Producto eliminado del carrito de compras")
+}
+
+//CONDICIONES//
+
+while(true){
+  const opcion = parseInt(prompt("Seleccione una opcion:/n1. Agregar al carrito:/n2. Mostrar carrito:/n3. Quitar producto:/n4. Salir"))
+
+  switch (opcion){
+    case 1:
+      agregaralCarrito()
+      break
+    case 2:
+      mostrarCarritoCompras()
+      break
+    case 3:
+      quitarProducto()
+      break
+    case 4:
+      alert("Gracias por utilizar el carrito de compras.")
+      break
+    default:
+     alert("Opcion incorrecta")
+  }
+
+  if(opcion === 4){
+    break
   }
 }
 
-//FUNCION PARA CALCULAR EL TOTAL DE PRODUCTOS COMPRADOS//
 
-function calcularTotal(){
-  let total = 0
-  for(let i = 0; i < carritoCompras.length; i++){
-
-    total += carritoCompras[i].precio
-
-  }
-
-  return total
-}
-
-//AGREGAR  O QUITAR PRODUCTOS AL CARRITO DE COMPRAS//
-agregaralCarrito("Golosina 0", 1000)
-agregaralCarrito("Golosina 1", 1500)
-agregaralCarrito("Golosina 2", 300)
-agregaralCarrito("Golosina 3", 200)
-
-quitarProducto(2)
-quitarProducto(0)
-
-console.log("Carrito de Compras")
-console.log(carritoCompras)
-console.log("Total a pagar: $" + calcularTotal(1000, 1500,))
 
 
 
