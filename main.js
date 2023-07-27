@@ -22,6 +22,16 @@ function agregaralCarrito(){
  
 }
 
+//FUNCION PARA CALCULAR Y MOSTRAR EL TOTAL DE LA COMPRA//
+
+function calcularTotal(){
+  let total = 0
+  for (let i = 0; i < carritoCompras.length; i++){
+    total += carritoCompras[i].precio
+  }
+  return total
+}
+
 //FUNCION PARA MOSTRAR EL CARRITO DE COMPRAS//
 
 function mostrarCarritoCompras(){
@@ -29,7 +39,9 @@ function mostrarCarritoCompras(){
   for (let i = 0; i < carritoCompras.length; i++){
    mensaje += `${i + 1}. ${carritoCompras[i].nombre}: $${carritoCompras[i].precio}\n`
   }
-  alert(mensaje);
+  const total = calcularTotal()
+  mensaje += "Total de la compra es: $" + total
+  alert(mensaje)
 }
 
 //FUNCION PARA QUITAR PRODUCTOS DEL CARRITO DE COMPRAS//
