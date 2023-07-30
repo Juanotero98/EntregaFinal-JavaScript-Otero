@@ -40,7 +40,7 @@ function mostrarCarritoCompras(){
    mensaje += `${i + 1}. ${carritoCompras[i].nombre}: $${carritoCompras[i].precio}\n`
   }
   const total = calcularTotal()
-  mensaje += "Total de la compra es: $" + total
+  mensaje += ("Total de la compra es: $" + total)
   alert(mensaje)
 }
 
