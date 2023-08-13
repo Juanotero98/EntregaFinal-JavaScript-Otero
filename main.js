@@ -1,97 +1,133 @@
+  /////////////////////////////////////////////////////////////////////////////////////////////////ENTREGA FINAL////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////-PRIMERA PRE-ENTREGA-////////
+  const Producto = function(nombre, precio, stock,){
+    this.nombre = nombre
+    this.precio = precio
+    this.stock = stock
+  }
 
-const carritoCompras = [];
+  let producto0 = new Producto("cheese baby simple", 2500, 20)
+  let producto1 = new Producto("cheese baby doble", 2800, 20)
+  let producto2 = new Producto("cheese baby triple", 3100, 20)
+  let producto3 = new Producto("bacon baby simple", 2600, 15)
+  let producto4 = new Producto("bacon baby doble", 2900, 15)
+  let producto5 = new Producto("bacon baby triple", 3200, 15)
+  let producto6 = new Producto("onion baby simple", 2600, 25)
+  let producto7 = new Producto("onion baby doble", 2800, 25)
+  let producto8 = new Producto("american baby simple", 2650, 30)
+  let producto9 = new Producto("american baby doble", 2900, 30)
+  let producto10 = new Producto("american baby triple", 3100, 30)
+  let producto11 = new Producto(" quarter baby simple", 2600, 10)
+  let producto12 = new Producto(" quarter baby doble", 2800, 10)
+  let producto13 = new Producto(" quarter baby triple", 3100, 10)
+  let producto14 = new Producto(" smash baby doble", 2900, 15)
+  let producto15 = new Producto(" smash baby triple", 3300, 15)
 
-//FUNCION PARA AGREGAR AL CARRITO DE COMPRAS//
-function agregarAlCarrito(nombre, precio) {
-  let producto = { nombre, precio };
-  carritoCompras.push(producto);
+  let menu= [producto0, producto1, producto2, producto3, producto4, producto5, producto6, producto7, producto8, producto9, producto10, producto11, producto12, producto13, producto14, producto15]
+
+//FUNCION PARA FILTRAR POR NOMBRE//
+
+  function filtrarPorNombre(){
+    let nombre = prompt("Ingrese el nombre de la hamburguesa que desea buscar")
+    let resultado = menu.filter((producto)=>producto.nombre.includes(nombre))
+
+    if(resultado.length > 0){
+        console.table(resultado)
+    }else{
+        alert("no se encontro ninguna:" + nombre)
+    }
+  }
+
+  let boton1 = document.getElementById("boton1")
+  boton1.addEventListener("click", filtrarPorNombre)
+
+//FUNCION PARA FILTRAR POR PRECIO//
+
+function filtrarPorPrecio(){
+    let minPrecio = parseFloat(prompt("Ingrese el precio minimo"))
+    let maxPrecio = parseFloat(prompt("Ingrese el precio maximo"))
+
+    let resultado = menu.filter((producto)=> producto.precio >= minPrecio && producto.precio <= maxPrecio)
+
+    if(resultado.length > 0){
+        console.table(resultado)
+    }else{
+        alert("No se encontraron hamburguesas en el rango de precio:" + minPrecio + "-" + maxPrecio)
+    }
 }
 
-//FUNCION PARA QUITAR DEL CARRITO DE COMPRAS//
-function quitarDelCarrito(indice) {
-  if (indice >= 0 && indice < carritoCompras.length) {
-    carritoCompras.splice(indice, 1);
-    alert("Producto eliminado del carrito.");
+let boton2 = document.getElementById("boton2")
+boton2.addEventListener("click", filtrarPorPrecio)
+
+//FUNCION PARA CREAR HAMBURGUESA//
+
+function agregarAlCarrito(){
+    let nombre = prompt("ingrese el nombre del la hamburguesa")
+    let stock = parseInt(prompt ("ingrese la cantidad"))
+    let precio = parseInt(prompt("ingrese el precio de la hamburguesa"))
+
+    if(isNaN(precio) || isNaN(stock) || nombre === null){
+        alert("por favor ingrese valores validos")
+        return
+    }
+
+    let producto = new Producto(nombre, precio, stock)
+
+    menu.push(producto)
+    console.table(menu)
+
+    agregarAlCarrito(producto);
+
+    const menuJSON = JSON.stringify(menu)
+    localStorage.setItem('menu',menuJSON)
+    sessionStorage.setItem('menu',menuJSON)
+}
+
+const storedMenu = localStorage.getItem('menu')
+if(storedMenu){
+  menu = JSON.parse(storedMenu)
+  console.table(menu)
+}
+
+let boton3 = document.getElementById("boton3")
+boton3.addEventListener("click", agregarAlCarrito)
+
+//FUNCION PARA QUITAR HAMBURGUESA//
+
+function quitarProducto(){
+    const nombre = prompt("Ingrese el nombre de la hamburguesa que desea quitar")
+    const index = menu.findIndex(producto => producto.nombre === nombre)
+
+    if (index !== -1) {
+      const productoEliminado = menu.splice(index, 1)[0];
+      console.log("Hamburguesa eliminada:", nombre);
+      console.table(menu);
+
+      const menuJSON = JSON.stringify(menu);
+      localStorage.setItem('menu',menuJSON)
+      sessionStorage.setItem('menu', menuJSON);
+
+      quitarProducto(nombre);
   } else {
-    alert("Índice inválido. Producto no encontrado en el carrito.");
-  }
+      alert(`No se puede encontrar: ${nombre}`);
+  };
 }
 
-//FUNCION PARA CALCUALR EL TOTAL A GASTAR//
-function calcularTotal() {
-  let total = 0;
-  for (let i = 0; i < carritoCompras.length; i++) {
-    total += carritoCompras[i].precio;
-  }
-  return total;
+const storedMenu2 =localStorage.getItem('menu')
+if(storedMenu){
+  menu = JSON.parse(storedMenu)
+  console.table(menu)
 }
 
-//FUNCION PARA MOSTRAR CARRITO DE COMPRAS//
-function mostrarCarrito(productos) {
-  alert("Carrito de compra:");
-  for (let i = 0; i < productos.length; i++) {
-    alert(`${i + 1}. ${productos[i].nombre}: $${productos[i].precio}`);
-  }
-  const total = calcularTotal();
-  alert(`Total a gastar: $${total}`);
-  
-}
+let boton4 = document.getElementById("boton4")
+boton4.addEventListener("click",quitarProducto) 
 
-//FUNCIONES PARA FILTRAR POR PRECIO Y NOMBRE//
-function filtrarPorPrecio(productos, minPrecio, maxPrecio) {
-  return productos.filter(producto => producto.precio >= minPrecio && producto.precio <= maxPrecio);
-}
+//LISTA DE HAMBURGUESAS//
 
-function filtrarPorNombre(productos, nombre) {
-  return productos.filter(producto => producto.nombre.toLowerCase().includes(nombre.toLowerCase()));
-}
+const listaHamburguesasElement = document.getElementById("lista-hamburguesas");
 
-
-
-//CONDICIONES//
-while (true) {
-  const opcion = parseInt(prompt(
-    "Seleccione una opción:\n1. Agregar producto\n2. Quitar producto\n3. Filtrar por precio\n4. Filtrar por nombre\n5. Mostrar carrito\n6. Salir"
-  ));
-
-  switch (opcion) {
-    case 1:
-      const nombre = prompt("Ingrese el nombre del producto:");
-      const precio = parseFloat(prompt("Ingrese el precio del producto:"));
-      agregarAlCarrito(nombre, precio);
-      break;
-    case 2:
-      const indice = parseInt(prompt("Ingrese el índice del producto a eliminar:")) - 1;
-      quitarDelCarrito(indice);
-      break;
-    case 3:
-      const minPrecio = parseFloat(prompt("Ingrese el precio mínimo:"));
-      const maxPrecio = parseFloat(prompt("Ingrese el precio máximo:"));
-      mostrarCarrito(filtrarPorPrecio(carritoCompras, minPrecio, maxPrecio));
-      break;
-    case 4:
-      const nombreFiltro = prompt("Ingrese el nombre del producto a filtrar:");
-      mostrarCarrito(filtrarPorNombre(carritoCompras, nombreFiltro));
-      break;
-    case 5:
-      mostrarCarrito(carritoCompras);
-      break;
-    case 6:
-      prompt("Gracias por utilizar el carrito de compras.");
-      break;
-    default:
-      prompt("Opción inválida.");
-  }
-
-  if (opcion === 6) {
-    break;
-  }
-}
-
-
-
-
-
-
+menu.forEach(producto => {
+  const liElement = document.createElement("li");
+  liElement.textContent = `${producto.nombre} - Precio: $${producto.precio} - Stock: ${producto.stock}`;
+  listaHamburguesasElement.appendChild(liElement);
+});
