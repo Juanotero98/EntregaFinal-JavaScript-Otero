@@ -25,18 +25,35 @@
 
   let menu= [producto0, producto1, producto2, producto3, producto4, producto5, producto6, producto7, producto8, producto9, producto10, producto11, producto12, producto13, producto14, producto15]
 
+  //FUNCION PARA MOSTRAR RESULTADOS EN CARDS//
+
+  function mostrarResultadoEnTarjetas(resultados, containerId) {
+    const resultContainer = document.getElementById(containerId);
+    resultContainer.innerHTML = ""; // Limpiar el contenedor antes de agregar nuevos resultados
+  
+    resultados.forEach(producto => {
+      const resultCard = document.createElement("div");
+      resultCard.classList.add("result-card");
+      resultCard.innerHTML = `
+        <h3 class="result-name">${producto.nombre}</h3>
+        <p class="result-precio">Precio: $${producto.precio.toFixed(2)}</p>
+        <p class="result-stock">Stock: ${producto.stock}</p>
+      `;
+      resultContainer.appendChild(resultCard);
+    });
+  }
+
 //FUNCION PARA FILTRAR POR NOMBRE//
 
   function filtrarPorNombre(){
     let nombre = prompt("Ingrese el nombre de la hamburguesa que desea buscar")
     let resultado = menu.filter((producto)=>producto.nombre.includes(nombre))
 
-    if(resultado.length > 0){
-        console.table(resultado)
-    }else{
-        alert("no se encontro ninguna:" + nombre)
+    resultado.length > 0
+    ? mostrarResultadoEnTarjetas(resultado, "resultadoFiltradoContainer")
+    : alert(`No se encontraron hamburguesas con el nombre: ${nombre}`);
     }
-  }
+  
 
   let boton1 = document.getElementById("boton1")
   boton1.addEventListener("click", filtrarPorNombre)
@@ -49,12 +66,10 @@ function filtrarPorPrecio(){
 
     let resultado = menu.filter((producto)=> producto.precio >= minPrecio && producto.precio <= maxPrecio)
 
-    if(resultado.length > 0){
-        console.table(resultado)
-    }else{
-        alert("No se encontraron hamburguesas en el rango de precio:" + minPrecio + "-" + maxPrecio)
-    }
-}
+    resultado.length > 0
+    ? mostrarResultadoEnTarjetas(resultado, "resultadoFiltradoContainer")
+    : alert(`No se encontraron hamburguesas en el rango de precio: ${minPrecio} - ${maxPrecio}`);
+  }
 
 let boton2 = document.getElementById("boton2")
 boton2.addEventListener("click", filtrarPorPrecio)
@@ -71,7 +86,7 @@ function agregarAlCarrito(){
         return
     }
 
-    let producto = new Producto(nombre, precio, stock)
+    let producto = new Producto(nombre, precio, stock);
 
     menu.push(producto)
     console.table(menu)
@@ -81,6 +96,17 @@ function agregarAlCarrito(){
     const menuJSON = JSON.stringify(menu)
     localStorage.setItem('menu',menuJSON)
     sessionStorage.setItem('menu',menuJSON)
+
+    const carritoCard = document.createElement("div");
+    carritoCard.classList.add("carrito-card");
+    carritoCard.innerHTML = `
+      <h3 class="carrito-name">${producto.nombre}</h3> <!-- Uso de la variable producto -->
+      <p class="carrito-precio">Precio: $${producto.precio.toFixed(2)}</p>
+      <p class="carrito-stock">Cantidad: ${producto.stock}</p>
+    `;
+  
+    const carritoContainer = document.getElementById("carritoContainer");
+    carritoContainer.appendChild(carritoCard);
 }
 
 const storedMenu = localStorage.getItem('menu')
@@ -107,11 +133,19 @@ function quitarProducto(){
       localStorage.setItem('menu',menuJSON)
       sessionStorage.setItem('menu', menuJSON);
 
-      quitarProducto(nombre);
-  } else {
+      const carritoContainer = document.getElementById("carritoContainer");
+      const carritoCards = carritoContainer.querySelectorAll(".carrito-card");
+
+      carritoCards.forEach(card => {
+        const productNameElement = card.querySelector(".carrito-name");
+        if (productNameElement && productNameElement.textContent === nombre) {
+          carritoContainer.removeChild(card);
+        }
+      });
+    } else {
       alert(`No se puede encontrar: ${nombre}`);
-  };
-}
+    }
+  }
 
 const storedMenu2 =localStorage.getItem('menu')
 if(storedMenu){
@@ -120,14 +154,4 @@ if(storedMenu){
 }
 
 let boton4 = document.getElementById("boton4")
-boton4.addEventListener("click",quitarProducto) 
-
-//LISTA DE HAMBURGUESAS//
-
-const listaHamburguesasElement = document.getElementById("lista-hamburguesas");
-
-menu.forEach(producto => {
-  const liElement = document.createElement("li");
-  liElement.textContent = `${producto.nombre} - Precio: $${producto.precio} - Stock: ${producto.stock}`;
-  listaHamburguesasElement.appendChild(liElement);
-});
+boton4.addEventListener("click",quitarProducto)
