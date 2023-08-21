@@ -1,157 +1,283 @@
-  /////////////////////////////////////////////////////////////////////////////////////////////////ENTREGA FINAL////////////////////////////////////////////////////////////////////////////////////////////////
+//VARIABLES PARA CARRITO//
 
-  const Producto = function(nombre, precio, stock,){
-    this.nombre = nombre
-    this.precio = precio
-    this.stock = stock
-  }
+let carritoVisible = false
 
-  let producto0 = new Producto("cheese baby simple", 2500, 20)
-  let producto1 = new Producto("cheese baby doble", 2800, 20)
-  let producto2 = new Producto("cheese baby triple", 3100, 20)
-  let producto3 = new Producto("bacon baby simple", 2600, 15)
-  let producto4 = new Producto("bacon baby doble", 2900, 15)
-  let producto5 = new Producto("bacon baby triple", 3200, 15)
-  let producto6 = new Producto("onion baby simple", 2600, 25)
-  let producto7 = new Producto("onion baby doble", 2800, 25)
-  let producto8 = new Producto("american baby simple", 2650, 30)
-  let producto9 = new Producto("american baby doble", 2900, 30)
-  let producto10 = new Producto("american baby triple", 3100, 30)
-  let producto11 = new Producto(" quarter baby simple", 2600, 10)
-  let producto12 = new Producto(" quarter baby doble", 2800, 10)
-  let producto13 = new Producto(" quarter baby triple", 3100, 10)
-  let producto14 = new Producto(" smash baby doble", 2900, 15)
-  let producto15 = new Producto(" smash baby triple", 3300, 15)
-
-  let menu= [producto0, producto1, producto2, producto3, producto4, producto5, producto6, producto7, producto8, producto9, producto10, producto11, producto12, producto13, producto14, producto15]
-
-  //FUNCION PARA MOSTRAR RESULTADOS EN CARDS//
-
-  function mostrarResultadoEnTarjetas(resultados, containerId) {
-    const resultContainer = document.getElementById(containerId);
-    resultContainer.innerHTML = ""; // Limpiar el contenedor antes de agregar nuevos resultados
-  
-    resultados.forEach(producto => {
-      const resultCard = document.createElement("div");
-      resultCard.classList.add("result-card");
-      resultCard.innerHTML = `
-        <h3 class="result-name">${producto.nombre}</h3>
-        <p class="result-precio">Precio: $${producto.precio.toFixed(2)}</p>
-        <p class="result-stock">Stock: ${producto.stock}</p>
-      `;
-      resultContainer.appendChild(resultCard);
-    });
-  }
-
-//FUNCION PARA FILTRAR POR NOMBRE//
-
-  function filtrarPorNombre(){
-    let nombre = prompt("Ingrese el nombre de la hamburguesa que desea buscar")
-    let resultado = menu.filter((producto)=>producto.nombre.includes(nombre))
-
-    resultado.length > 0
-    ? mostrarResultadoEnTarjetas(resultado, "resultadoFiltradoContainer")
-    : alert(`No se encontraron hamburguesas con el nombre: ${nombre}`);
-    }
-  
-
-  let boton1 = document.getElementById("boton1")
-  boton1.addEventListener("click", filtrarPorNombre)
-
-//FUNCION PARA FILTRAR POR PRECIO//
-
-function filtrarPorPrecio(){
-    let minPrecio = parseFloat(prompt("Ingrese el precio minimo"))
-    let maxPrecio = parseFloat(prompt("Ingrese el precio maximo"))
-
-    let resultado = menu.filter((producto)=> producto.precio >= minPrecio && producto.precio <= maxPrecio)
-
-    resultado.length > 0
-    ? mostrarResultadoEnTarjetas(resultado, "resultadoFiltradoContainer")
-    : alert(`No se encontraron hamburguesas en el rango de precio: ${minPrecio} - ${maxPrecio}`);
-  }
-
-let boton2 = document.getElementById("boton2")
-boton2.addEventListener("click", filtrarPorPrecio)
-
-//FUNCION PARA CREAR HAMBURGUESA//
-
-function agregarAlCarrito(){
-    let nombre = prompt("ingrese el nombre del la hamburguesa")
-    let stock = parseInt(prompt ("ingrese la cantidad"))
-    let precio = parseInt(prompt("ingrese el precio de la hamburguesa"))
-
-    if(isNaN(precio) || isNaN(stock) || nombre === null){
-        alert("por favor ingrese valores validos")
-        return
-    }
-
-    let producto = new Producto(nombre, precio, stock);
-
-    menu.push(producto)
-    console.table(menu)
-
-    agregarAlCarrito(producto);
-
-    const menuJSON = JSON.stringify(menu)
-    localStorage.setItem('menu',menuJSON)
-    sessionStorage.setItem('menu',menuJSON)
-
-    const carritoCard = document.createElement("div");
-    carritoCard.classList.add("carrito-card");
-    carritoCard.innerHTML = `
-      <h3 class="carrito-name">${producto.nombre}</h3> <!-- Uso de la variable producto -->
-      <p class="carrito-precio">Precio: $${producto.precio.toFixed(2)}</p>
-      <p class="carrito-stock">Cantidad: ${producto.stock}</p>
-    `;
-  
-    const carritoContainer = document.getElementById("carritoContainer");
-    carritoContainer.appendChild(carritoCard);
+if(document.readyState == 'loading'){
+    document.addEventListener('DOMContentLoaded', ready)
+}else{
+    ready()
 }
 
-const storedMenu = localStorage.getItem('menu')
-if(storedMenu){
-  menu = JSON.parse(storedMenu)
-  console.table(menu)
+//ESTRUCTURA JSON//
+let carrito ={
+  items:[
+    {
+      titulo: "Cheese baby simple",
+      precio: 2.800,
+      imagen: "./imagen/Hamburguesa 1.jpeg"
+    },
+    {
+      titulo: "Cheese baby doble",
+      precio: 3.200,
+      imagen: "./imagen/Hamburguesa 2.jpeg"
+    },
+    {
+      titulo: "Cheese baby triple",
+      precio: 3.500,
+      imagen: "./imagen/Hamburguesa 3.jpeg"
+    },
+    {
+      titulo: "Bacon baby simple",
+      precio: 2.900,
+      imagen: "./imagen/Hamburguesa 4.jpeg"
+    },
+    {
+      titulo: "Bacon baby doble",
+      precio: 3.300,
+      imagen: "./imagen/Hamburguesa 5.jpeg"
+    },
+    {
+      titulo: "Bacon baby triple",
+      precio: 3.700,
+      imagen: "./imagen/Hamburguesa 6.jpeg"
+    },
+    {
+      titulo: "Onion baby simple",
+      precio: 2.900,
+      imagen: "./imagen/Hamburguesa 7.jpeg"
+    },
+    {
+      titulo: "Onion baby doble",
+      precio: 3.300,
+      imagen: "./imagen/Hamburguesa 8.jpeg"
+    },
+    {
+      titulo: "American baby simple",
+      precio: 3.000,
+      imagen: "./imagen/Hamburguesa 9.jpeg"
+    },
+    {
+      titulo: "American baby doble",
+      precio: 3.300,
+      imagen: "./imagen/Hamburguesa 10.jpeg"
+    },
+    {
+      titulo: "American baby triple",
+      precio: 3.500,
+      imagen: "./imagen/Hamburguesa 11.jpeg"
+    },
+    {
+      titulo: "Quarter baby simple",
+      precio: 3.000,
+      imagen: "./imagen/Hamburguesa 12.jpeg"
+    },
+    {
+      titulo: "Quarter baby doble",
+      precio: 3.200,
+      imagen: "./imagen/Hamburguesa 13.jpeg"
+    },
+    {
+      titulo: "Quarter baby triple",
+      precio: 3.500,
+      imagen: "./imagen/Hamburguesa 14.jpeg"
+    },
+    {
+      titulo: "Smash baby simple",
+      precio: 2.800,
+      imagen: "./imagen/Hamburguesa 15.jpeg"
+    },
+    {
+      titulo: "Smash baby simple",
+      precio: 2.800,
+      imagen: "./imagen/Hamburguesa 16.jpeg"
+    },
+  
+  ]
 }
 
-let boton3 = document.getElementById("boton3")
-boton3.addEventListener("click", agregarAlCarrito)
+//FUNCIONES PARA GUARDAR Y RECUPERAR DEL STORAGE//
 
-//FUNCION PARA QUITAR HAMBURGUESA//
+function guardarEnLocalStorage(carrito) {
+  localStorage.setItem('carrito', JSON.stringify(carrito));
+}
 
-function quitarProducto(){
-    const nombre = prompt("Ingrese el nombre de la hamburguesa que desea quitar")
-    const index = menu.findIndex(producto => producto.nombre === nombre)
+function guardarEnSessionStorage(carrito) {
+  sessionStorage.setItem('carrito', JSON.stringify(carrito));
+}
 
-    if (index !== -1) {
-      const productoEliminado = menu.splice(index, 1)[0];
-      console.log("Hamburguesa eliminada:", nombre);
-      console.table(menu);
+function recuperarDelLocalStorage() {
+  const data = localStorage.getItem('carrito');
+  return data ? JSON.parse(data) : null;
+}
 
-      const menuJSON = JSON.stringify(menu);
-      localStorage.setItem('menu',menuJSON)
-      sessionStorage.setItem('menu', menuJSON);
+function recuperarDelSessionStorage() {
+  const data = sessionStorage.getItem('carrito');
+  return data ? JSON.parse(data) : null;
+}
 
-      const carritoContainer = document.getElementById("carritoContainer");
-      const carritoCards = carritoContainer.querySelectorAll(".carrito-card");
-
-      carritoCards.forEach(card => {
-        const productNameElement = card.querySelector(".carrito-name");
-        if (productNameElement && productNameElement.textContent === nombre) {
-          carritoContainer.removeChild(card);
-        }
-      });
-    } else {
-      alert(`No se puede encontrar: ${nombre}`);
+//FUNCIONES PARA BOTONES DE "ELIMINAR PRODUCTO" DEL CARRITO//
+function ready(){
+    let botonEliminarItem = document.getElementsByClassName('btn-eliminar')
+    for(let i=0; i< botonEliminarItem.length; i++){
+        let button = botonEliminarItem[i]
+        button.addEventListener('click', eliminarItemCarrito)
     }
-  }
-
-const storedMenu2 =localStorage.getItem('menu')
-if(storedMenu){
-  menu = JSON.parse(storedMenu)
-  console.table(menu)
+    //FUNCION SUMAR CANTIDAD//
+    let botonSumarCantidad = document.getElementsByClassName('sumar-cantidad')
+    for(let i=0; i< botonSumarCantidad.length; i++){
+        let button = botonSumarCantidad[i]
+        button.addEventListener('click', sumarCantidad)
+    }
+    //FUNCION RESTAR CANTIDAD//
+    let botonRestarCantidad = document.getElementsByClassName('restar-cantidad')
+    for(let i=0; i< botonRestarCantidad.length; i++){
+        let button = botonRestarCantidad[i]
+        button.addEventListener('click', restarCantidad)
+    }
+    //FUNCION AGREGAR PRODUCTO//
+    let botonAgregarAlCarrito = document.getElementsByClassName('boton-item')
+    for(let i=0; i<botonAgregarAlCarrito.length; i++){
+        let button = botonAgregarAlCarrito[i]
+        button.addEventListener('click', agregarAlCarrito)
+    }
+    //RECUPERAR CARRITO DEL LOCAL STORAGE//
+    carrito = recuperarDelSessionStorage() || carrito;
+    //FUNCION BOTON PAGAR//
+    document.getElementsByClassName('btn-pagar')[0].addEventListener('click', realizarPago)
 }
 
-let boton4 = document.getElementById("boton4")
-boton4.addEventListener("click",quitarProducto)
+//ELIMINAR PRODUCTO DEL CARRITO//
+function eliminarItemCarrito(event){
+    let buttonClicked = event.target
+    buttonClicked.parentElement.remove()
+    //GUARDAR CARRITO ACTUALIZADO EN LOCAL STORAGE//
+    guardarEnLocalStorage(carrito);
+    guardarEnSessionStorage(carrito);
+    //ACTUALIZAR VALOR TOTAL UNA VEZ ELIMINADO EL PRODUCTO//
+    actualizarTotal()
+}
+
+//ACTUALIZAR TOTAL//
+function actualizarTotal(){
+    let carritoConteainer = document.getElementsByClassName('carrito')[0]
+    let carritoItems = carritoConteainer.getElementsByClassName('carrito-item');
+    let total = 0;
+    //RECORRER ELEMENTOS DEL CARRITO PARA ACTUALIZAR EL TOTAL//
+    for(let i=0; i< carritoItems.length;i++){
+        let item = carritoItems[i]
+        let precioItem = item.getElementsByClassName('carrito-item-precio')[0]
+        console.log(precioItem)
+        //QUITAR EL SIMBOLO $ Y PUNTOS DEL HTML//
+        let precio = parseFloat(precioItem.innerText.replace('$','').replace('.',''))
+        console.log(precio);
+        let cantidadItem = item.getElementsByClassName('carrito-item-cantidad')[0]
+        let cantidad = cantidadItem.value;
+        console.log(cantidad)
+        total = total + (precio * cantidad)
+    }
+    total= Math.round(total*100)/100;
+    document.getElementsByClassName('carrito-precio-total')[0].innerText = '$'+total.toLocaleString("es");
+}
+
+//AUMENTAR CANTIDAD DE PRODUCTOS//
+function sumarCantidad(event){
+    let buttonClicked = event.target
+    let selector = buttonClicked.parentElement
+    let cantidadActual = selector.getElementsByClassName('carrito-item-cantidad')[0].value
+    console.log(cantidadActual)
+    cantidadActual++;
+    selector.getElementsByClassName('carrito-item-cantidad')[0].value = cantidadActual
+    //GUARDAR CARRITO ACTUALIZADO EN LOCAL STORAGE//
+    guardarEnLocalStorage(carrito);
+    guardarEnSessionStorage(carrito);
+    //ACTUALIZAR TOTAL//
+    actualizarTotal()
+}
+
+//RESTAR CANTIDAD DE PRODUCTOS//
+function restarCantidad(event){
+    let buttonClicked = event.target
+    let selector = buttonClicked.parentElement
+    let cantidadActual = selector.getElementsByClassName('carrito-item-cantidad')[0].value
+    console.log(cantidadActual)
+    cantidadActual--;
+    if(cantidadActual>=1){
+        selector.getElementsByClassName('carrito-item-cantidad')[0].value = cantidadActual
+        //GUARDAR CARRITO ACTUALIZADO EN LOCAL STORAGE//
+        guardarEnLocalStorage(carrito);
+        guardarEnSessionStorage(carrito)
+   //ACTUALIZAR TOTAL//
+    actualizarTotal()
+    } 
+}
+
+//AGREGAR AL CARRITO//
+function agregarAlCarrito(event){
+  let button = event.target
+  let item = button.parentElement
+  let titulo = item.getElementsByClassName('titulo-item')[0].innerText
+  console.log(titulo)
+  let precio = item.getElementsByClassName('precio-item')[0].innerText
+  let imagenSrc = item.getElementsByClassName('img-item')[0].src
+  console.log(imagenSrc)
+
+    agregarProductoAlCarrito(titulo, precio, imagenSrc)
+    guardarEnLocalStorage(carrito)
+    guardarEnSessionStorage(carrito)
+}
+
+function agregarProductoAlCarrito(titulo,precio,imagenSrc){
+  let item = document.createElement('div')
+  item.classList.add = ('item')
+  let itemsCarrito = document.getElementsByClassName('carrito-items')[0]
+
+  let nombresItemsCarrito = itemsCarrito.getElementsByClassName('carrito-item-titulo')
+  for(let i=0; i<nombresItemsCarrito.length;i++){
+      if(nombresItemsCarrito[i].innerText == titulo){
+          alert("El item ya se encuentra seleccionado")
+          return
+      }
+  }
+  let itemCarritoContenido =`
+  <div class="carrito-item">
+      <img src="${imagenSrc}" alt="" width="80px">
+      <div class="carrito-item-detalles">
+          <span class="carrito-item-titulo">${titulo}</span>
+          <div class="selector-cantidad">
+              <i class="fa-solid fa-minus restar-cantidad"></i>
+              <input type="text" value="1" class="carrito-item-cantidad" disabled>
+              <i class="fa-solid fa-plus sumar-cantidad"></i>
+          </div>
+          <span class="carrito-item-precio">${precio}</span>
+      </div>
+      <span class="btn-eliminar">
+          <i class="fa-solid fa-trash"></i>
+      </span>
+  </div>`
+  item.innerHTML = itemCarritoContenido
+  itemsCarrito.append(item)
+  //AGREGAR FUNCIONALIDAD AL BOTON DE ELIMINAR//
+  item.getElementsByClassName('btn-eliminar')[0].addEventListener('click', eliminarItemCarrito)
+  //AGREGAR FUNCIONALIDAD A LOS BOTONES DE SUMAR Y RESTAR//
+  let botonSumarCantidad = item.getElementsByClassName('sumar-cantidad')[0]
+  botonSumarCantidad.addEventListener('click', sumarCantidad)
+  let botonRestarCantidad = item.getElementsByClassName('restar-cantidad')[0]
+  botonRestarCantidad.addEventListener('click', restarCantidad)
+  //ACTUALIZAR TOTAL//
+  actualizarTotal()
+}
+
+//REALIZAR PAGO//
+function realizarPago(event){
+    alert("Gracias por su compra")
+
+    let carritoItems = document.getElementsByClassName('carrito-items')[0]
+    while(carritoItems.hasChildNodes()){
+        carritoItems.removeChild(carritoItems.firstChild)
+    }
+    actualizarTotal()
+    //LIMPIAR CARRITO Y GUARDAR CAMBIO EN LOCAL STORAGE//
+    carrito.items = [];
+    guardarEnLocalStorage(carrito);
+    guardarEnSessionStorage(carrito)
+}
