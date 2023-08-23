@@ -234,7 +234,11 @@ function agregarProductoAlCarrito(titulo,precio,imagenSrc){
   let nombresItemsCarrito = itemsCarrito.getElementsByClassName('carrito-item-titulo')
   for(let i=0; i<nombresItemsCarrito.length;i++){
       if(nombresItemsCarrito[i].innerText == titulo){
-          alert("El item ya se encuentra seleccionado")
+        Swal.fire(
+          'Ooops',
+          'Esta hamburguesa ya esta dentro del carrito, por favor elije otra',
+          'error'
+        )
           return
       }
   }
@@ -269,8 +273,13 @@ function agregarProductoAlCarrito(titulo,precio,imagenSrc){
 
 //REALIZAR PAGO//
 function realizarPago(event){
-    alert("Gracias por su compra")
-
+  Swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: 'Gracias por su compra',
+    showConfirmButton: false,
+    timer: 1500
+  })
     let carritoItems = document.getElementsByClassName('carrito-items')[0]
     while(carritoItems.hasChildNodes()){
         carritoItems.removeChild(carritoItems.firstChild)
