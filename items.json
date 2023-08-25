@@ -1,0 +1,84 @@
+
+    [
+      {
+        "titulo": "Cheese baby simple",
+        "precio": 2.800,
+        "imagen": "./imagen/Hamburguesa 1.jpeg"
+      },
+      {
+        "titulo": "Cheese baby doble",
+        "precio": 3.200,
+        "imagen": "./imagen/Hamburguesa 2.jpeg"
+      },
+      {
+        "titulo": "Cheese baby triple",
+        "precio": 3.500,
+        "imagen": "./imagen/Hamburguesa 3.jpeg"
+      },
+      {
+        "titulo": "Bacon baby simple",
+        "precio": 2.900,
+        "imagen": "./imagen/Hamburguesa 4.jpeg"
+      },
+      {
+        "titulo": "Bacon baby doble",
+        "precio": 3.300,
+        "imagen": "./imagen/Hamburguesa 5.jpeg"
+      },
+      {
+        "titulo": "Bacon baby triple",
+        "precio": 3.700,
+        "imagen": "./imagen/Hamburguesa 6.jpeg"
+      },
+      {
+        "titulo": "Onion baby simple",
+        "precio": 2.900,
+        "imagen": "./imagen/Hamburguesa 7.jpeg"
+      },
+      {
+        "titulo": "Onion baby doble",
+        "precio": 3.300,
+        "imagen": "./imagen/Hamburguesa 8.jpeg"
+      },
+      {
+        "titulo": "American baby simple",
+        "precio": 3.000,
+        "imagen": "./imagen/Hamburguesa 9.jpeg"
+      },
+      {
+        "titulo": "American baby doble",
+        "precio": 3.300,
+        "imagen": "./imagen/Hamburguesa 10.jpeg"
+      },
+      {
+        "titulo": "American baby triple",
+        "precio": 3.500,
+        "imagen": "./imagen/Hamburguesa 11.jpeg"
+      },
+      {
+        "titulo": "Quarter baby simple",
+        "precio": 3.000,
+        "imagen": "./imagen/Hamburguesa 12.jpeg"
+      },
+      {
+        "titulo": "Quarter baby doble",
+        "precio": 3.200,
+        "imagen": "./imagen/Hamburguesa 13.jpeg"
+      },
+      {
+        "titulo": "Quarter baby triple",
+        "precio": 3.500,
+        "imagen": "./imagen/Hamburguesa 14.jpeg"
+      },
+      {
+        "titulo": "Smash baby simple",
+        "precio": 2.800,
+        "imagen": "./imagen/Hamburguesa 15.jpeg"
+      },
+      {
+        "titulo": "Smash baby simple",
+        "precio": 2.800,
+        "imagen": "./imagen/Hamburguesa 16.jpeg"
+      }
+    
+    ]
