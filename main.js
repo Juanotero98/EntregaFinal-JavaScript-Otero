@@ -129,7 +129,6 @@ function ready(){
   for(let i=0; i<botonAgregarAlCarrito.length; i++){
       let button = botonAgregarAlCarrito[i]
       button.addEventListener('click', agregarAlCarrito)
-      guardarLocalStorage()
   }
   //RECUPERAR CARRITO DEL LOCAL STORAGE//
   
